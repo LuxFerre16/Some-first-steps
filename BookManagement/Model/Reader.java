@@ -9,7 +9,7 @@ public class Reader
    
 
     //constructor
-    public BookReaderManagement(int readerID, int phoneNumber, String fullName, String address)
+    public Reader(int readerID, String fullName, String address, int phoneNumber)
     {
         this.readerID = readerID;
         this.phoneNumber = phoneNumber;
