@@ -1,8 +1,13 @@
+import model.Book;
+import model.BookReaderManagement;
+import model.Reader;
+
+
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.io.IOException;
 import jdk.javadoc.internal.doclets.formats.html.SplitIndexWriter;
 
 
@@ -111,8 +116,6 @@ public class FileManipulation
         String[] datas = data.split(regex = "\\|");
         Reader reader = new Reader(Integer.parseInt(datas[0],datas[1], datas[2], datas[3]));
 
-        
-        Reader reader = new Reader();
         return reader;
     }
 
@@ -137,14 +140,47 @@ public class FileManipulation
         return books;
     }
 
-    private Book createBookFromData(String data) 
+    public Book createBookFromData(String data) 
     {
-        String[] datas = data.split( regex:  "\\|");
+        String[] datas = data.split( regex =  "\\|");
     
         Book book = new Book(Integer.parseInt(datas[0],datas[1],datas[2],datas[3],Integer.parseInt(datas[4], Integer.parseInt(datas[5]))));
         
         return book;
     }
 
+    public ArrayList<BookReaderManagement> readBRMsFromFile(String filename)
+    {
+        openFiletoRead(filename);
+
+        ArrayList<BookReaderManagement> brms = new ArrayList<>();
+
+        while (scanner.hasNextLine())
+        {
+            String data = scanner.nextLine();
+            BookReaderManagement brms = createBRmsFromData(data);
+            brms.add(brms);
+
+            
+        }
+        
+        
+        closeFileAfterRead(filename);
+
+        return brms;
+    }
+
+    public BookReaderManagement createBRMsData(String data) 
+    {
+        String[] datas = data.split( regex =  "\\|");
+    
+        BookReaderManagement brm = new BookReaderManagement( new Book(Integer.parseInt(datas[1])), new Reader(Integer.parseInt(datas[0])),
+         Integer.parseInt(datas[2], datas[3], totalBorrow: 0);
+        
+        return brm;
+    }
+
 
 }
+
+

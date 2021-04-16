@@ -13,7 +13,13 @@ public class Book
     //Constructors
     public Book(int bookID, string bookName, string author, string specializations, int publicYear, int quantity) 
     {
-        this.bookID = bookID;
+        if (bookID == 0)
+        {
+            bookID = bookID++;
+        }
+        else this.bookID = bookID;
+        
+        
         this.bookName = bookName;
         this.author = author;
         this.specializations = specializations;
