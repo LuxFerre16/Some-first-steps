@@ -1,9 +1,11 @@
+package Model;
+
 
 public class Book 
 {
 
     private static int id = 100000;
-    private int bookID = 100000;
+    private int bookID;
     private String bookName;
     private String author;
     private String specializations;
@@ -12,11 +14,11 @@ public class Book
     
     
     //Constructors
-    public Book(int bookID, string bookName, string author, string specializations, int publicYear, int quantity) 
+    public Book(int bookID, String bookName, String author, String specializations, int publicYear, int quantity) 
     {
         if (bookID == 0)
         {
-            bookID = bookID++;
+            this.bookID = id++;
         }
         else this.bookID = bookID;
         
@@ -34,7 +36,7 @@ public class Book
     }
 
 
-    public void setBookID(int bookID) {
+    public  void setBookID(int bookID) {
         this.bookID = bookID;
     }
 
@@ -88,5 +90,22 @@ public class Book
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() 
+    {
+        return "Book [bookID=" + bookID + ", Book Title: " + bookName+ ", Author: "+ author  + ", Public Year: " + publicYear
+                + ", Quantity: " + quantity + ", Specialization: " + specializations + "]";
+    }
+
+    public static void setID(int i) 
+    {
+    id = i;
+    }
+
     
 }
+
+
+
+    
+

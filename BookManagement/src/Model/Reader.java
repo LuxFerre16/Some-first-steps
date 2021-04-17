@@ -1,3 +1,5 @@
+package Model;
+
 public class Reader 
 {
     
@@ -11,6 +13,12 @@ public class Reader
     //constructor
     public Reader(int readerID, String fullName, String address, int phoneNumber)
     {
+        if (readerID == 0) 
+        {
+            this.readerID = id++;
+        }
+        else this.readerID = readerID;
+        
         this.readerID = readerID;
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;

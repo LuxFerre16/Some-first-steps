@@ -1,14 +1,15 @@
-import model.Book;
-import model.BookReaderManagement;
-import model.Reader;
+package Control;
 
-
+import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.IOException;
-import jdk.javadoc.internal.doclets.formats.html.SplitIndexWriter;
+
+import Model.Book;
+import Model.BookReaderManagement;
+import Model.Reader;
 
 
 public class FileManipulation 
@@ -23,7 +24,7 @@ public class FileManipulation
     {
         try 
         {
-            fileWriter = new FileWriter(filename, append = true);
+            fileWriter = new FileWriter(filename, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             printWriter = new PrintWriter(bufferedWriter);
 
@@ -36,31 +37,36 @@ public class FileManipulation
     }
 
     
-    public void writeBookToFile(Book book, String filname)
+    public void writeBookToFile(Book book, String fileName)
     {
-        printWriter.println(book.getbookID() + "|" + book.getBookName() + "|" + book.getAuthor + "|" + book.getSpecializations
-                                                                         + "|" + book.getPublicYear + "|" + book.getQuantity);
-    
+        openFileToWrite(fileName);
+        
+        printWriter.println(book.getBookID() + "|" + book.getBookName() + "|" + book.getAuthor() + "|" + book.getSpecializations()
+                                                                         + "|" + book.getPublicYear() + "|" + book.getQuantity());
+        closeFileAfterWrite(fileName);
     
     }
 
-    public void writeReaderToFile(Reader reader, String filname)
+    public void writeReaderToFile(Reader reader, String fileName)
     {
+        openFileToWrite(fileName);
+        
         printWriter.println(reader.getReaderID() + "|" + reader.getFullName() + "|" + reader.getAddress() + "|" + reader.getPhoneNumber());
     
-    
+        closeFileAfterWrite(fileName);
     }
 
-    public void writeBookReaderManagementToFile(BookReaderManagement brm, String filname)
+    public void writeBookReaderManagementToFile(BookReaderManagement brm, String fileName)
     {
-        printWriter.println(brm.getReaderID() + "|" + brm.getFullName()
-         + "|" + brm.getBookName() + "|" + brm.getBookID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
-    
-    
+        openFileToWrite(fileName);
+        
+        printWriter.println(brm.getReader().getReaderID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
+        
+        closeFileAfterWrite(fileName);
     }
 
                                                                         
-    public void closeFileAfterWrite(String filename)
+    public void closeFileAfterWrite(String fileName)
     {
         try 
         {
@@ -73,18 +79,18 @@ public class FileManipulation
             }
     }
 
-    public void openFileToRead(String filename)
+    public void openFileToRead(String fileName)
     {
         try 
         {
-            scanner = new Scanner(Paths.get(filename), charsetName = "UTF-8");
+            scanner = new Scanner(Paths.get(fileName),"UTF-8");
         } catch (Exception e) 
             {
             e.printStackTrace();
             }
     }
 
-    public void closeFileAfterRead(String filename)
+    public void closeFileAfterRead(String fileName)
     {
         try 
         {
@@ -96,10 +102,10 @@ public class FileManipulation
             }
     }
 
-    public ArrayList<Reader> readReadersFromFile(String filename)
+    public ArrayList<Reader> readReadersFromFile(String fileName)
     {
-        openFileToRead(filename);
-        closeFileAfterRead(filename);
+        openFileToRead(fileName);
+        closeFileAfterRead(fileName);
         ArrayList<Reader> readers = new ArrayList<> ();
             while (scanner.hasNextLine())
             {
@@ -116,14 +122,14 @@ public class FileManipulation
     {
         String[] datas = data.split("\\|");
 
-        Reader reader = new Reader(Integer.parseInt(datas[0]),datas[1], datas[2], datas[3]);
+        Reader reader = new Reader(Integer.parseInt(datas[0]),datas[1], datas[2], Integer.parseInt(datas[3]));
 
         return reader;
     }
 
-    public ArrayList<Book> readBooksFromFile(String filename)
+    public ArrayList<Book> readBooksFromFile(String fileName)
     {
-        openFileToRead(filename);
+        openFileToRead(fileName);
 
         ArrayList<Book> books = new ArrayList<>();
 
@@ -137,16 +143,16 @@ public class FileManipulation
         }
         
         
-        closeFileAfterRead(filename);
+        closeFileAfterRead(fileName);
 
         return books;
     }
 
     public Book createBookFromData(String data) 
     {
-        String[] datas = data.split( regex =  "\\|");
+        String[] datas = data.split("\\|");
     
-        Book book = new Book(Integer.parseInt(datas[0]),datas[1],datas[2],datas[3],Integer.parseInt(datas[4]), datas[5]);
+        Book book = new Book(Integer.parseInt(datas[0]),datas[1],datas[2],datas[3],Integer.parseInt(datas[4]), Integer.parseInt(datas[5]));
         
         return book;
     }
@@ -160,7 +166,7 @@ public class FileManipulation
         while (scanner.hasNextLine())
         {
             String data = scanner.nextLine();
-            BookReaderManagement brm = createBRmsFromData(data);
+            BookReaderManagement brm = createBRMsData(data);
             brms.add(brm);
 
             
@@ -174,10 +180,9 @@ public class FileManipulation
 
     public BookReaderManagement createBRMsData(String data) 
     {
-        String[] datas = data.split( regex =  "\\|");
+        String[] datas = data.split("\\|");
     
-        BookReaderManagement brm = new BookReaderManagement( new Book(Integer.parseInt(datas[1])), new Reader(Integer.parseInt(datas[0])),
-         Integer.parseInt(datas[2], datas[3], totalBorrow = 0 ));
+        BookReaderManagement brm = new BookReaderManagement( new Book(Integer.parseInt(datas[1]), data, data, data, 0, 0), new Reader(Integer.parseInt(datas[0]), data, data, 0),Integer.parseInt(datas[2]), datas[3], 0);
         
         return brm;
     }

@@ -1,4 +1,10 @@
+package View;
+
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import Control.FileManipulation;
+import Model.Book;
 
 public class View 
 
@@ -8,7 +14,8 @@ public class View
         int choice= 0;
         var booksFileName = "BOOK.DAT";
         var controller = new FileManipulation();
-        
+        var books = new ArrayList<Book>();
+        var isIDChecked = false;
 
 
 
@@ -26,17 +33,26 @@ public class View
         switch (choice)
         {
             case 0: {
+                    System.out.println("___________________________");
                     System.out.println("Thanks for using");
                     break;
                     }
         
             case 1: 
             {
-                String bookname, author, specializations;
-                int yearofpubliation, quantity,specV, bookID;
+                
+                if (!isIDChecked)
+                    {
+                        checkbookID(controller,booksFileName);
+                        isIDChecked = true;
+                    }
+                
+                
+                String bookName, author, specializations;
+                int yearOfPublication, quantity,specV;
                 
                 System.out.println("Input book title: ");
-                bookname = scanner.nextLine();
+                bookName = scanner.nextLine();
 
                 System.out.println("Input author: ");
                 author = scanner.nextLine();
@@ -52,19 +68,28 @@ public class View
                 specializations = specs[specV-1];
                 
                 System.out.println("Input year of publication: ");
-                yearofpubliation = scanner.nextInt();
+                yearOfPublication = scanner.nextInt();
                 
                 System.out.println("Input quantity: ");
                 quantity = scanner.nextInt();
                 
-                Book book = new Book(bookID = 0,bookname, author, specializations, yearofpubliation, quantity);
-                controller.writeBooktoFile(book, booksFileName);
+                Book book = new Book(0,bookName, author, specializations, yearOfPublication, quantity);
+                controller.writeBookToFile(book, booksFileName);
                 
                 
                 break;
             }
             
-            
+            case 2:
+            {
+                System.out.println("_____________Books information__________________");
+                
+                books = controller.readBooksFromFile(booksFileName);
+                showBookInfo(books);
+
+                
+                break;
+            }
         
         }    
     
@@ -72,6 +97,22 @@ public class View
         }
         while (choice != 0);
 
+    scanner.close();
+    
+    }
 
+   
+    private static void checkbookID(FileManipulation controller, String fileName) 
+    {
+        var listBooks = controller.readBooksFromFile(fileName);
+
+        Book.setID(listBooks.get(listBooks.size()-1).getBookID() +1 );
+    }
+
+
+    private static void showBookInfo(ArrayList<Book> books) 
+    {
+        for (var b: books)
+            System.out.println(b);
     }
 }

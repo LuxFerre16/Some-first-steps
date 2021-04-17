@@ -1,3 +1,5 @@
+package Model;
+
 public class BookReaderManagement 
 {
 
@@ -56,6 +58,10 @@ public class BookReaderManagement
 
     public void setTotalBorrow(int totalBorrow) {
         this.totalBorrow = totalBorrow;
+    }
+
+    public int getFullName() {
+        return 0;
     }
 
     
