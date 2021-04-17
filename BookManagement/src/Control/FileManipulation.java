@@ -19,7 +19,7 @@ public class FileManipulation
     private PrintWriter printWriter;
     private Scanner scanner;
 
-    public void openFiletoWrite(String filename)
+    public void openFileToWrite(String filename)
     {
         try 
         {
@@ -35,7 +35,8 @@ public class FileManipulation
 
     }
 
-    public void writeBooktoFile(Book book, String filname)
+    
+    public void writeBookToFile(Book book, String filname)
     {
         printWriter.println(book.getbookID() + "|" + book.getBookName() + "|" + book.getAuthor + "|" + book.getSpecializations
                                                                          + "|" + book.getPublicYear + "|" + book.getQuantity);
@@ -43,14 +44,14 @@ public class FileManipulation
     
     }
 
-    public void writeReadertoFile(Reader reader, String filname)
+    public void writeReaderToFile(Reader reader, String filname)
     {
         printWriter.println(reader.getReaderID() + "|" + reader.getFullName() + "|" + reader.getAddress() + "|" + reader.getPhoneNumber());
     
     
     }
 
-    public void writeBookReaderManagementtoFile(BookReaderManagement brm, String filname)
+    public void writeBookReaderManagementToFile(BookReaderManagement brm, String filname)
     {
         printWriter.println(brm.getReaderID() + "|" + brm.getFullName()
          + "|" + brm.getBookName() + "|" + brm.getBookID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
@@ -72,7 +73,7 @@ public class FileManipulation
             }
     }
 
-    public void openFiletoRead(String filename)
+    public void openFileToRead(String filename)
     {
         try 
         {
@@ -97,14 +98,14 @@ public class FileManipulation
 
     public ArrayList<Reader> readReadersFromFile(String filename)
     {
-        openFiletoRead(filename);
+        openFileToRead(filename);
         closeFileAfterRead(filename);
         ArrayList<Reader> readers = new ArrayList<> ();
             while (scanner.hasNextLine())
             {
                 String data = scanner.nextLine();
                 Reader reader = createReaderFromData(data);
-                reader.add(reader)
+                readers.add(reader);
             }
 
 
@@ -113,15 +114,16 @@ public class FileManipulation
 
     public Reader createReaderFromData(String data)
     {
-        String[] datas = data.split(regex = "\\|");
-        Reader reader = new Reader(Integer.parseInt(datas[0],datas[1], datas[2], datas[3]));
+        String[] datas = data.split("\\|");
+
+        Reader reader = new Reader(Integer.parseInt(datas[0]),datas[1], datas[2], datas[3]);
 
         return reader;
     }
 
     public ArrayList<Book> readBooksFromFile(String filename)
     {
-        openFiletoRead(filename);
+        openFileToRead(filename);
 
         ArrayList<Book> books = new ArrayList<>();
 
@@ -144,22 +146,22 @@ public class FileManipulation
     {
         String[] datas = data.split( regex =  "\\|");
     
-        Book book = new Book(Integer.parseInt(datas[0],datas[1],datas[2],datas[3],Integer.parseInt(datas[4], Integer.parseInt(datas[5]))));
+        Book book = new Book(Integer.parseInt(datas[0]),datas[1],datas[2],datas[3],Integer.parseInt(datas[4]), datas[5]);
         
         return book;
     }
 
     public ArrayList<BookReaderManagement> readBRMsFromFile(String filename)
     {
-        openFiletoRead(filename);
+        openFileToRead(filename);
 
         ArrayList<BookReaderManagement> brms = new ArrayList<>();
 
         while (scanner.hasNextLine())
         {
             String data = scanner.nextLine();
-            BookReaderManagement brms = createBRmsFromData(data);
-            brms.add(brms);
+            BookReaderManagement brm = createBRmsFromData(data);
+            brms.add(brm);
 
             
         }
@@ -175,7 +177,7 @@ public class FileManipulation
         String[] datas = data.split( regex =  "\\|");
     
         BookReaderManagement brm = new BookReaderManagement( new Book(Integer.parseInt(datas[1])), new Reader(Integer.parseInt(datas[0])),
-         Integer.parseInt(datas[2], datas[3], totalBorrow: 0);
+         Integer.parseInt(datas[2], datas[3], totalBorrow = 0 ));
         
         return brm;
     }

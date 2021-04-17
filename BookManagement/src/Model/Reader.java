@@ -1,7 +1,7 @@
 public class Reader 
 {
     
-    private static id = 100000;
+    private static int id = 1000000;
     private int readerID;
     private int phoneNumber;
     private String fullName;

@@ -1,8 +1,9 @@
+
 public class Book 
 {
 
-    private static id = 100000;
-    private int bookID;
+    private static int id = 100000;
+    private int bookID = 100000;
     private String bookName;
     private String author;
     private String specializations;

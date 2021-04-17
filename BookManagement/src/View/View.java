@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Control.FileManipulation;
+
 public class View 
 
 {
@@ -8,56 +8,56 @@ public class View
         int choice= 0;
         var booksFileName = "BOOK.DAT";
         var controller = new FileManipulation();
-        //var books = new Book null;
+        
 
 
 
         Scanner scanner = new Scanner(System.in);
         do
         {
-        system.out.println("-------------Menu ----------------");
-        system.out.println("1. Insert new book title");
-        system.out.println("2. Print list of books");
-        system.out.println("0. Exit");
-        system.out.println("Your choice: ? ? ?");
+        System.out.println("-------------Menu ----------------");
+        System.out.println("1. Insert new book title");
+        System.out.println("2. Print list of books");
+        System.out.println("0. Exit");
+        System.out.println("Your choice: ? ? ?");
 
         choice = scanner.nextInt();
         scanner.nextLine();
         switch (choice)
         {
             case 0: {
-                    system.out.println("Thanks for using");
+                    System.out.println("Thanks for using");
                     break;
                     }
         
             case 1: 
             {
-                string bookname, author, specializations;
-                int yearofpubliation, quantity,specV;
+                String bookname, author, specializations;
+                int yearofpubliation, quantity,specV, bookID;
                 
-                system.out.println("Input book title: ");
+                System.out.println("Input book title: ");
                 bookname = scanner.nextLine();
 
-                system.out.println("Input author: ");
+                System.out.println("Input author: ");
                 author = scanner.nextLine();
 
                 String[] specs = {"Science", "Art", "Economic", "IT"};
                 do
                 {
-                system.out.println("Input specialization: ");
-                system.out.println("1. Science\n 2.Art\n 3.Economic\n 4.IT");
-                specV = scanner.next_int();
+                System.out.println("Input specialization: ");
+                System.out.println("1. Science\n 2.Art\n 3.Economic\n 4.IT");
+                specV = scanner.nextInt();
                 }
                 while (specV < 1 || specV > 4);
-                spec = specs[specV-1];
+                specializations = specs[specV-1];
                 
-                system.out.println("Input year of publication: ");
+                System.out.println("Input year of publication: ");
                 yearofpubliation = scanner.nextInt();
                 
-                system.out.println("Input quantity: ");
+                System.out.println("Input quantity: ");
                 quantity = scanner.nextInt();
                 
-                Book book = new Book(bookID = 0,bookname,author,specialization,yearofpubliation,quantity);
+                Book book = new Book(bookID = 0,bookname, author, specializations, yearofpubliation, quantity);
                 controller.writeBooktoFile(book, booksFileName);
                 
                 
