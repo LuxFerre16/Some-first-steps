@@ -19,7 +19,6 @@ public class Reader
         }
         else this.readerID = readerID;
         
-        this.readerID = readerID;
         this.phoneNumber = phoneNumber;
         this.fullName = fullName;
         this.address = address;
