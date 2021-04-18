@@ -90,6 +90,12 @@ public class Book
         this.quantity = quantity;
     }
 
+    public static void setID(int i) 
+    {
+    id = i;
+    }
+
+    
     @Override
     public String toString() 
     {
@@ -97,11 +103,7 @@ public class Book
                 + ", Quantity: " + quantity + ", Specialization: " + specializations + "]";
     }
 
-    public static void setID(int i) 
-    {
-    id = i;
-    }
-
+    
     
 }
 

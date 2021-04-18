@@ -3,15 +3,15 @@ package Model;
 public class Reader 
 {
     
-    private static int id = 1000000;
+    private static int id = 100000;
     private int readerID;
-    private int phoneNumber;
+    private String phoneNumber;
     private String fullName;
     private String address;
    
 
     //constructor
-    public Reader(int readerID, String fullName, String address, int phoneNumber)
+    public Reader(int readerID, String fullName, String address, String phoneNumber)
     {
         if (readerID == 0) 
         {
@@ -36,12 +36,12 @@ public class Reader
     }
 
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -63,6 +63,19 @@ public class Reader
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public static void setID(int i) 
+    {
+        id = i;
+    }
+
+    //toString
+    @Override
+    public String toString() 
+    {
+        return "Reader [ ReaderID: "
+        + readerID +  " Full name: " + fullName + " Address: " + address +   ", Phone number: " + phoneNumber +"]";
     }
 
    

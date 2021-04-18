@@ -1,6 +1,7 @@
 package Control;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
@@ -83,6 +84,11 @@ public class FileManipulation
     {
         try 
         {
+            File file = new File(fileName);
+            if (!file.exists())
+            {
+                file.createNewFile();
+            }
             scanner = new Scanner(Paths.get(fileName),"UTF-8");
         } catch (Exception e) 
             {
@@ -105,7 +111,7 @@ public class FileManipulation
     public ArrayList<Reader> readReadersFromFile(String fileName)
     {
         openFileToRead(fileName);
-        closeFileAfterRead(fileName);
+        
         ArrayList<Reader> readers = new ArrayList<> ();
             while (scanner.hasNextLine())
             {
@@ -115,6 +121,7 @@ public class FileManipulation
             }
 
 
+        closeFileAfterRead(fileName);
         return readers;
     }
 
@@ -122,7 +129,7 @@ public class FileManipulation
     {
         String[] datas = data.split("\\|");
 
-        Reader reader = new Reader(Integer.parseInt(datas[0]),datas[1], datas[2], Integer.parseInt(datas[3]));
+        Reader reader = new Reader(Integer.parseInt(datas[0]),datas[1], datas[2], datas[3]);
 
         return reader;
     }
@@ -182,7 +189,9 @@ public class FileManipulation
     {
         String[] datas = data.split("\\|");
     
-        BookReaderManagement brm = new BookReaderManagement( new Book(Integer.parseInt(datas[1]), data, data, data, 0, 0), new Reader(Integer.parseInt(datas[0]), data, data, 0),Integer.parseInt(datas[2]), datas[3], 0);
+        BookReaderManagement brm = new BookReaderManagement(new Book(Integer.parseInt(datas[1]), data, data, data, 0, 0), 
+                                                            new Reader(Integer.parseInt(datas[0]), data, data, data), 
+                                                            Integer.parseInt(datas[2]), datas[3],0);
         
         return brm;
     }
