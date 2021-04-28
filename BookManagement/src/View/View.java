@@ -3,8 +3,10 @@ package View;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Control.DataUtility;
 import Control.FileManipulation;
 import Model.Book;
+import Model.BookReaderManagement;
 import Model.Reader;
 
 public class View 
@@ -16,10 +18,12 @@ public class View
         
         var booksFileName = "BOOK.DAT";
         var readersFileName = "READER.DAT";
+        var BRMFileName = "BRM.DAT";
         
         var controller = new FileManipulation();
         var books = new ArrayList<Book>();
         var readers = new ArrayList<Reader>();
+        var brms = new ArrayList<BookReaderManagement>();
         
         var isBookIDChecked = false;
         var isReaderIDChecked = false;
@@ -34,6 +38,7 @@ public class View
         System.out.println("2. Print list of books");
         System.out.println("3. Insert new Reader");
         System.out.println("4. Print list of Readers");
+        System.out.println("5. Establish book management information");
         System.out.println("0. Exit");
         System.out.println("Your choice: ? ? ?");
 
@@ -139,6 +144,87 @@ public class View
             }
 
 
+            case 5:
+            {   
+                readers = controller.readReadersFromFile(readersFileName);
+                books = controller.readBooksFromFile(booksFileName);
+                brms = controller.readBRMsFromFile(BRMFileName);
+
+
+                int readerID, booksID;
+                boolean reachLimit = false;
+                
+                showReaderInfo(readers);
+                System.out.println("==========================");
+                
+                do
+                {
+                    System.out.println("Input reader ID: , 0 to skip.");
+                    readerID = scanner.nextInt();
+                    if (readerID == 0 ) break;
+
+                    reachLimit = checkBorrowed(brms, readerID);
+
+                    if (reachLimit) break;
+                    else 
+                    {
+                        System.out.println("This reader has reached borrow limit!");
+                    }
+                    
+                }while(true);
+
+                boolean bookLimit = false;
+                do
+                {
+                    showBookInfo(books);
+                    System.out.println("==========================");
+                    System.out.println("Input bookID, 0 to skip.");
+                    booksID = scanner.nextInt();
+                    
+                    if (booksID == 0) break;
+                    bookLimit = checkBookLimit(brms, readerID, booksID);
+                    if (bookLimit) System.out.println("Reached limit of this book title!"); else break; 
+                }while(true);
+
+                int total = getTotal(brms, readerID, booksID);
+                do
+                {
+                    
+                    System.out.println("Input number of books to borrow, max 3. (Borrowed " + total + ")");
+                    int x = scanner.nextInt();
+                    if (x+total >=1 && x + total <= 3)
+                    {
+                        total += x;
+                        break;
+                    }  else System.out.println("Re-input please, Invalid info inputted!");
+                
+                }while(true);
+                scanner.nextLine();
+
+                System.out.println("Input book condition when borrow.");
+                String status = "";
+                status = scanner.nextLine();
+
+
+                Book currentBook = getBook(books, booksID);
+                Reader currentReader = getReader(readers, readerID);
+
+                
+                BookReaderManagement b = new BookReaderManagement(currentBook, currentReader, total, status,0);
+
+                var ultility = new DataUtility();
+                brms = ultility.updateBRMInfo(brms, b);
+                FileManipulation.updateBRMFile(brms, BRMFileName);
+
+
+                showBRMInfo(brms);
+
+                
+                
+                
+                break;
+            }
+
         }    
     
     
@@ -150,6 +236,70 @@ public class View
     }
 
    
+    private static void showBRMInfo(ArrayList<BookReaderManagement> brms) 
+    {
+        for (var b : brms)
+        {
+            System.out.println(b);
+        }
+    }
+
+
+    private static Reader getReader(ArrayList<Reader> readers, int readerID) 
+    {
+        for (int i = 0;  i < readers.size(); i++)
+        {
+            if (readers.get(i).getReaderID() == readerID) 
+            {
+                return readers.get(i);
+            };
+        }
+        
+        return null;
+    }
+
+
+    private static Book getBook(ArrayList<Book> books, int booksID) 
+    {
+        for (int i = 0 ; i< books.size() ; i++)
+        {
+            if (books.get(i).getBookID() == booksID) 
+            {
+                return books.get(i);
+            }
+        }
+        
+        return null;
+    }
+
+
+    private static int getTotal(ArrayList<BookReaderManagement> brms, int readerID, int booksID) 
+    {
+        for (var r: brms)
+        {
+            if (r.getReader().getReaderID() == readerID 
+                && r.getBook().getBookID() == booksID) return r.getNumOfBorrow();
+        }
+        
+        
+        return 0;
+    }
+
+
+    private static boolean checkBookLimit(ArrayList<BookReaderManagement> brms, int readerID, int bookID) 
+    {
+        for (var r: brms)
+        {
+            if (r.getReader().getReaderID() == readerID 
+                && r.getBook().getBookID() == bookID && r.getNumOfBorrow() ==3 ) return true;
+        }
+        
+        
+        
+        return false;
+    }
+
+
     private static void showReaderInfo(ArrayList<Reader> readers) 
     {
         System.out.println("_________Readers Information_____________");
@@ -190,7 +340,22 @@ public class View
             System.out.println(b);
     }
 
+    private static boolean checkBorrowed(ArrayList<BookReaderManagement> brms, int readerID)
+    {
+        int count = 0;
+        for (var r: brms)
+        {
+            if (r.getReader().getReaderID() == readerID)
+            {
+                count += r.getNumOfBorrow();
+            }
+        }
+        
+        if (count == 15) return false;
+        return true;
 
+    }
 
+    
     
 }

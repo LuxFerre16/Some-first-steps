@@ -16,12 +16,12 @@ import Model.Reader;
 public class FileManipulation 
 
 {
-    private FileWriter fileWriter;
-    private BufferedWriter bufferedWriter;
-    private PrintWriter printWriter;
+    private static FileWriter fileWriter;
+    private static BufferedWriter bufferedWriter;
+    private static PrintWriter printWriter;
     private Scanner scanner;
 
-    public void openFileToWrite(String filename)
+    public static void openFileToWrite(String filename)
     {
         try 
         {
@@ -67,7 +67,7 @@ public class FileManipulation
     }
 
                                                                         
-    public void closeFileAfterWrite(String fileName)
+    public static void closeFileAfterWrite(String fileName)
     {
         try 
         {
@@ -195,7 +195,20 @@ public class FileManipulation
         
         return brm;
     }
+    public static void updateBRMFile(ArrayList<BookReaderManagement> list, String fileName)
+    {
+        File current = new File(fileName);
+        if (current.exists()) current.delete();
 
+        openFileToWrite(fileName);
+        for (var brm : list)
+        {
+            printWriter.println(brm.getReader().getReaderID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
+        }
+
+
+        closeFileAfterWrite(fileName);
+    }
 
 }
 
