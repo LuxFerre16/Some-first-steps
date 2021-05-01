@@ -7,11 +7,12 @@
         
         {
             "type": "java",
-            "name": "Launch Main",
+            "name": "Launch View",
             "request": "launch",
-            "mainClass": "view.Main",
-            "projectName": "BookManagement"
-        },
+            "mainClass": "View.View",
+            "projectName": "BookManagement_3f500c93"
+        }
+        
     ]
         
 }

@@ -66,7 +66,7 @@ public class BookReaderManagement
 
     @Override
     public String toString() {
-        return "ReaderManagement [ReaderID: " + reader.getReaderID() + ", BookID: " + book.getBookID() + ", Num Of borrow= " + numOfBorrow + ", Status: "
+        return "ReaderManagement [ReaderID: " + reader.getReaderID() + ", Reader's name: " + reader.getFullName() + ", BookID: " + book.getBookID() + ", Book title: " + book.getBookID() + ", Num Of borrow= " + numOfBorrow + ", Status: "
                 + state + ", total borrow=" + totalBorrow + "]";
     }
 

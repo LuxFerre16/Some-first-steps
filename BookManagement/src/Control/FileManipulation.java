@@ -166,6 +166,8 @@ public class FileManipulation
 
     public ArrayList<BookReaderManagement> readBRMsFromFile(String filename)
     {
+        var books = readBooksFromFile(BOOK.DATA);
+        var readers = readReadersFromFile(READER.DAT);
         openFileToRead(filename);
 
         ArrayList<BookReaderManagement> brms = new ArrayList<>();
@@ -173,7 +175,7 @@ public class FileManipulation
         while (scanner.hasNextLine())
         {
             String data = scanner.nextLine();
-            BookReaderManagement brm = createBRMsData(data);
+            BookReaderManagement brm = createBRMsData(data, readers, books);
             brms.add(brm);
 
             
@@ -185,13 +187,11 @@ public class FileManipulation
         return brms;
     }
 
-    public BookReaderManagement createBRMsData(String data) 
+    public BookReaderManagement createBRMsData(String data, ArrayList<Reader> readers, ArrayList<Book> books) 
     {
         String[] datas = data.split("\\|");
     
-        BookReaderManagement brm = new BookReaderManagement(new Book(Integer.parseInt(datas[1]), data, data, data, 0, 0), 
-                                                            new Reader(Integer.parseInt(datas[0]), data, data, data), 
-                                                            Integer.parseInt(datas[2]), datas[3],0);
+        BookReaderManagement brm = new BookReaderManagement(getBook(books, Integer.parseInt(datas[1])), getReader(readers. Integer.parseInt(datas[0])), Integer.parseInt(datas[2]),datas[3], 0);
         
         return brm;
     }
@@ -208,6 +208,33 @@ public class FileManipulation
 
 
         closeFileAfterWrite(fileName);
+    }
+
+    private static Reader getReader(ArrayList<Reader> readers, int readerID) 
+    {
+        for (int i = 0;  i < readers.size(); i++)
+        {
+            if (readers.get(i).getReaderID() == readerID) 
+            {
+                return readers.get(i);
+            };
+        }
+        
+        return null;
+    }
+
+
+    private static Book getBook(ArrayList<Book> books, int booksID) 
+    {
+        for (int i = 0 ; i< books.size() ; i++)
+        {
+            if (books.get(i).getBookID() == booksID) 
+            {
+                return books.get(i);
+            }
+        }
+        
+        return null;
     }
 
 }

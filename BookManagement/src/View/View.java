@@ -10,7 +10,6 @@ import Model.BookReaderManagement;
 import Model.Reader;
 
 public class View 
-
 {
     public static void main(String[] args)
     {
@@ -28,6 +27,7 @@ public class View
         var isBookIDChecked = false;
         var isReaderIDChecked = false;
 
+        var ultility = new DataUtility();
 
         Scanner scanner = new Scanner(System.in);
         
@@ -39,6 +39,8 @@ public class View
         System.out.println("3. Insert new Reader");
         System.out.println("4. Print list of Readers");
         System.out.println("5. Establish book management information");
+        System.out.println("6. Sort");
+        System.out.println("7. Find reader in BRM list.");
         System.out.println("0. Exit");
         System.out.println("Your choice: ? ? ?");
 
@@ -212,17 +214,63 @@ public class View
                 
                 BookReaderManagement b = new BookReaderManagement(currentBook, currentReader, total, status,0);
 
-                var ultility = new DataUtility();
+                
                 brms = ultility.updateBRMInfo(brms, b);
                 FileManipulation.updateBRMFile(brms, BRMFileName);
 
 
                 showBRMInfo(brms);
-
-                
-                
-                
                 break;
+
+                case 6: 
+                brms = FileManipulation.readBooksFromFile(BRMFileName);
+                System.out.println("===================================================")
+                System.out.println("=========Sorting method: ==========");
+                brms = ultility.updateTotalBorrow(brms);
+                do 
+                {
+                    
+                System.out.println("1. Sort by Reader's name.");
+                System.out.println("2. Sort by total borrow.")
+                System.out.println("0 to return to main menu")
+                int z;
+                z = scanner.nextInt();
+                if (z==0) {break;}
+                switch(z)
+                    {
+                        case 1: 
+                            {
+                                
+                                brms = ultility.sortByReaderName(brms);
+                                showBRMInfo(brms);
+                                break;
+                            }
+                        case 2:
+                            {
+                                brms = ultility.sortNumOfBorrow(brms);
+                                showBRMInfo(brms);
+                                break;
+                            }
+                    }
+                } while (true);
+
+                case 7:
+                {
+                    brms = FileManipulation.readBRMsFromFile(BRMFileName);
+                    System.out.println("Input words in desire Name: ");
+                    String key = scanner.nextLine();
+
+                    var result = ultility.searchByReaderName(brms, key);
+                    if (result.size() == 0)
+                    {
+                    System.out.println("None Reader with similar name found!");
+                    } else 
+                    {
+                        showBRMInfo(result);;
+                    }
+                    break;
+                }
+
             }
 
         }    
@@ -230,8 +278,6 @@ public class View
     
         }
         while (choice != 0);
-
-    
         scanner.close();
     }
 
@@ -355,6 +401,7 @@ public class View
         return true;
 
     }
+
 
     
     
