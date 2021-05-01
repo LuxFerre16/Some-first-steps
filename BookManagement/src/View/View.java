@@ -44,216 +44,212 @@ public class View
         System.out.println("0. Exit");
         System.out.println("Your choice: ? ? ?");
 
-        choice = scanner.nextInt();
-        scanner.nextLine();
-        switch (choice)
-        {
-            case 0: {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+            switch (choice)
+            {
+                case 0: 
+                    {
                     System.out.println("___________________________");
                     System.out.println("Thanks for using");
                     break;
                     }
         
-            case 1: 
-            {
+                case 1: 
+                {
                 
-                if (!isBookIDChecked)
-                    {
+                    if (!isBookIDChecked)
+                        {
                         checkbookID(controller,booksFileName);
                         isBookIDChecked = true;
-                    }
+                        }
                 
                 
-                String bookName, author, specializations;
-                int yearOfPublication, quantity,specV;
+                    String bookName, author, specializations;
+                    int yearOfPublication, quantity,specV;
                 
-                System.out.println("Input book title: ");
-                bookName = scanner.nextLine();
+                    System.out.println("Input book title: ");
+                    bookName = scanner.nextLine();
 
-                System.out.println("Input author: ");
-                author = scanner.nextLine();
+                    System.out.println("Input author: ");
+                    author = scanner.nextLine();
 
-                String[] specs = {"Science", "Art", "Economic", "IT"};
-                do
-                {
-                System.out.println("Input specialization: ");
-                System.out.println("1. Science\n 2.Art\n 3.Economic\n 4.IT");
-                specV = scanner.nextInt();
-                }
-                while (specV < 1 || specV > 4);
-                specializations = specs[specV-1];
-                
-                System.out.println("Input year of publication: ");
-                yearOfPublication = scanner.nextInt();
-                
-                System.out.println("Input quantity: ");
-                quantity = scanner.nextInt();
-                
-                Book book = new Book(0,bookName, author, specializations, yearOfPublication, quantity);
-                controller.writeBookToFile(book, booksFileName);
-                
-                
-                break;
-            }
-            
-            case 2:
-            {
-                System.out.println("_____________Books information__________________");
-                
-                books = controller.readBooksFromFile(booksFileName);
-                showBookInfo(books);
-
-                
-                break;
-            }
-            
-            case 3:
-            {   
-                if (!isReaderIDChecked)
-                {
-                    checkReaderID(controller,readersFileName);
-                    isReaderIDChecked = true;
-                }
-                
-                String fullName, address, phoneNumber;
-                
-                System.out.println("Input Reader's full name: ");
-                fullName = scanner.nextLine();
-
-                System.out.println("Input Reader's address: ");
-                address = scanner.nextLine();
-
-                do 
-                {
-                
-                System.out.println("Input valid Reader's phone number: ");
-                phoneNumber = scanner.nextLine();
-                
-                }
-                while (!phoneNumber.matches("\\d{10}"));
-
-                Reader reader = new Reader(0, fullName, address, phoneNumber);
-                controller.writeReaderToFile(reader, readersFileName);
-
-                break;
-            }
-
-            case 4:
-            {
-                readers = controller.readReadersFromFile(readersFileName);
-                showReaderInfo(readers);
-                break;
-            }
-
-
-            case 5:
-            {   
-                readers = controller.readReadersFromFile(readersFileName);
-                books = controller.readBooksFromFile(booksFileName);
-                brms = controller.readBRMsFromFile(BRMFileName);
-
-
-                int readerID, booksID;
-                boolean reachLimit = false;
-                
-                showReaderInfo(readers);
-                System.out.println("==========================");
-                
-                do
-                {
-                    System.out.println("Input reader ID: , 0 to skip.");
-                    readerID = scanner.nextInt();
-                    if (readerID == 0 ) break;
-
-                    reachLimit = checkBorrowed(brms, readerID);
-
-                    if (reachLimit) break;
-                    else 
+                    String[] specs = {"Science", "Art", "Economic", "IT"};
+                    do
                     {
-                        System.out.println("This reader has reached borrow limit!");
+                    System.out.println("Input specialization: ");
+                    System.out.println("1. Science\n 2.Art\n 3.Economic\n 4.IT");
+                    specV = scanner.nextInt();
                     }
-                    
-                }while(true);
-
-                boolean bookLimit = false;
-                do
+                    while (specV < 1 || specV > 4);
+                    specializations = specs[specV-1];
+                
+                    System.out.println("Input year of publication: ");
+                    yearOfPublication = scanner.nextInt();
+                
+                    System.out.println("Input quantity: ");
+                    quantity = scanner.nextInt();
+                
+                    Book book = new Book(0,bookName, author, specializations, yearOfPublication, quantity);
+                    controller.writeBookToFile(book, booksFileName);
+                
+                
+                    break;
+                }
+            
+                case 2:
                 {
+                    System.out.println("_____________Books information__________________");
+                
+                    books = controller.readBooksFromFile(booksFileName);
                     showBookInfo(books);
-                    System.out.println("==========================");
-                    System.out.println("Input bookID, 0 to skip.");
-                    booksID = scanner.nextInt();
                     
-                    if (booksID == 0) break;
-                    bookLimit = checkBookLimit(brms, readerID, booksID);
-                    if (bookLimit) System.out.println("Reached limit of this book title!"); else break; 
-                }while(true);
-
-                int total = getTotal(brms, readerID, booksID);
-                do
-                {
-                    
-                    System.out.println("Input number of books to borrow, max 3. (Borrowed " + total + ")");
-                    int x = scanner.nextInt();
-                    if (x+total >=1 && x + total <= 3)
+                    break;
+                }
+            
+                case 3:
+                {   
+                    if (!isReaderIDChecked)
                     {
-                        total += x;
-                        break;
-                    }  else System.out.println("Re-input please, Invalid info inputted!");
-                
-                }while(true);
-                scanner.nextLine();
-
-                System.out.println("Input book condition when borrow.");
-                String status = "";
-                status = scanner.nextLine();
-
-
-                Book currentBook = getBook(books, booksID);
-                Reader currentReader = getReader(readers, readerID);
-
-                
-                BookReaderManagement b = new BookReaderManagement(currentBook, currentReader, total, status,0);
-
-                
-                brms = ultility.updateBRMInfo(brms, b);
-                FileManipulation.updateBRMFile(brms, BRMFileName);
-
-
-                showBRMInfo(brms);
-                break;
-
-                case 6: 
-                brms = FileManipulation.readBooksFromFile(BRMFileName);
-                System.out.println("===================================================")
-                System.out.println("=========Sorting method: ==========");
-                brms = ultility.updateTotalBorrow(brms);
-                do 
-                {
-                    
-                System.out.println("1. Sort by Reader's name.");
-                System.out.println("2. Sort by total borrow.")
-                System.out.println("0 to return to main menu")
-                int z;
-                z = scanner.nextInt();
-                if (z==0) {break;}
-                switch(z)
-                    {
-                        case 1: 
-                            {
-                                
-                                brms = ultility.sortByReaderName(brms);
-                                showBRMInfo(brms);
-                                break;
-                            }
-                        case 2:
-                            {
-                                brms = ultility.sortNumOfBorrow(brms);
-                                showBRMInfo(brms);
-                                break;
-                            }
+                        checkReaderID(controller,readersFileName);
+                        isReaderIDChecked = true;
                     }
-                } while (true);
+                
+                    String fullName, address, phoneNumber;
+                
+                    System.out.println("Input Reader's full name: ");
+                    fullName = scanner.nextLine();
 
+                    System.out.println("Input Reader's address: ");
+                    address = scanner.nextLine();
+
+                    do 
+                    {
+                
+                    System.out.println("Input valid Reader's phone number: ");
+                    phoneNumber = scanner.nextLine();
+                
+                    }while (!phoneNumber.matches("\\d{10}"));
+
+                    Reader reader = new Reader(0, fullName, address, phoneNumber);
+                    controller.writeReaderToFile(reader, readersFileName);
+
+                    break;
+                }
+
+                case 4:
+                {
+                    readers = controller.readReadersFromFile(readersFileName);
+                    showReaderInfo(readers);
+                    break;
+                }
+
+
+                case 5:
+                {   
+                    readers = controller.readReadersFromFile(readersFileName);
+                    books = controller.readBooksFromFile(booksFileName);
+                    brms = controller.readBRMsFromFile(BRMFileName);
+
+                    int readerID, booksID;
+                    boolean reachLimit = false;
+                    
+                    showReaderInfo(readers);
+                    System.out.println("==========================");
+                
+                    do
+                    {
+                        System.out.println("Input reader ID: , 0 to skip.");
+                        readerID = scanner.nextInt();
+                        if (readerID == 0 ) break;
+
+                        reachLimit = checkBorrowed(brms, readerID);
+
+                        if (reachLimit) break;
+                        else 
+                        {
+                            System.out.println("This reader has reached borrow limit!");
+                        }
+                    
+                    }while(true);
+
+                    boolean bookLimit = false;
+                    do
+                    {
+                        showBookInfo(books);
+                        System.out.println("==========================");
+                        System.out.println("Input bookID, 0 to skip.");
+                        booksID = scanner.nextInt();
+                    
+                        if (booksID == 0) break;
+                        bookLimit = checkBookLimit(brms, readerID, booksID);
+                        if (bookLimit) System.out.println("Reached limit of this book title!"); else break; 
+                    }while(true);
+
+                    int total = getTotal(brms, readerID, booksID);
+                    do
+                    {
+                    
+                        System.out.println("Input number of books to borrow, max 3. (Borrowed " + total + ")");
+                        int x = scanner.nextInt();
+                        if (x+total >=1 && x + total <= 3)
+                        {
+                            total += x;
+                            break;
+                        }  else System.out.println("Re-input please, Invalid info inputted!");
+                
+                    }while(true);
+                    scanner.nextLine();
+
+                    System.out.println("Input book condition when borrow.");
+                    String status = "";
+                    status = scanner.nextLine();
+
+
+                    Book currentBook = getBook(books, booksID);
+                    Reader currentReader = getReader(readers, readerID);
+
+                    BookReaderManagement b = new BookReaderManagement(currentBook, currentReader, total, status,0);
+
+                    brms = ultility.updateBRMInfo(brms, b);
+                    FileManipulation.updateBRMFile(brms, BRMFileName);
+
+                    showBRMInfo(brms);
+                    break;
+                }
+                case 6: 
+                {
+                    brms = FileManipulation.readBooksFromFile(BRMFileName);
+                    System.out.println("===================================================")
+                    System.out.println("=========Sorting method: ==========");
+                    brms = ultility.updateTotalBorrow(brms);
+                    do 
+                    {
+                    
+                    System.out.println("1. Sort by Reader's name.");
+                    System.out.println("2. Sort by total borrow.")
+                    System.out.println("0 to return to main menu")
+                    int z;
+                    z = scanner.nextInt();
+                    if (z==0) {break;}
+                    switch(z)
+                        {
+                            case 1: 
+                                {
+                                
+                                    brms = ultility.sortByReaderName(brms);
+                                    showBRMInfo(brms);
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    brms = ultility.sortNumOfBorrow(brms);
+                                    showBRMInfo(brms);
+                                    break;
+                                }
+                        }
+                    } while (true);
+                }
                 case 7:
                 {
                     brms = FileManipulation.readBRMsFromFile(BRMFileName);
@@ -276,7 +272,7 @@ public class View
         }    
     
     
-        }
+        
         while (choice != 0);
         scanner.close();
     }
@@ -298,7 +294,7 @@ public class View
             if (readers.get(i).getReaderID() == readerID) 
             {
                 return readers.get(i);
-            };
+            }
         }
         
         return null;
@@ -324,7 +320,7 @@ public class View
         for (var r: brms)
         {
             if (r.getReader().getReaderID() == readerID 
-                && r.getBook().getBookID() == booksID) return r.getNumOfBorrow();
+                && r.getBook().getBookID() == booksID) {return r.getNumOfBorrow();}
         }
         
         
@@ -337,7 +333,7 @@ public class View
         for (var r: brms)
         {
             if (r.getReader().getReaderID() == readerID 
-                && r.getBook().getBookID() == bookID && r.getNumOfBorrow() ==3 ) return true;
+                && r.getBook().getBookID() == bookID && r.getNumOfBorrow() ==3 ) {return true;}
         }
         
         
@@ -402,7 +398,7 @@ public class View
 
     }
 
-
-    
-    
 }
+    
+    
+
