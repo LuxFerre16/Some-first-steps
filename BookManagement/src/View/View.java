@@ -219,16 +219,16 @@ public class View
                 }
                 case 6: 
                 {
-                    brms = FileManipulation.readBooksFromFile(BRMFileName);
-                    System.out.println("===================================================")
+                    brms = FileManipulation.readBooksFromFile(booksFileName);
+                    System.out.println("===================================================");
                     System.out.println("=========Sorting method: ==========");
                     brms = ultility.updateTotalBorrow(brms);
                     do 
                     {
                     
                     System.out.println("1. Sort by Reader's name.");
-                    System.out.println("2. Sort by total borrow.")
-                    System.out.println("0 to return to main menu")
+                    System.out.println("2. Sort by total borrow.");
+                    System.out.println("0 to return to main menu");
                     int z;
                     z = scanner.nextInt();
                     if (z==0) {break;}
@@ -243,7 +243,7 @@ public class View
                                 }
                             case 2:
                                 {
-                                    brms = ultility.sortNumOfBorrow(brms);
+                                    brms = ultility.sortByNumOfBorrow(brms);
                                     showBRMInfo(brms);
                                     break;
                                 }
@@ -366,7 +366,7 @@ public class View
 
     private static void checkbookID(FileManipulation controller, String fileName) 
     {
-        var booksList = controller.readBooksFromFile(fileName);
+        var booksList = FileManipulation.readBooksFromFile(fileName);
 
         if (booksList.size() == 0)
         {
