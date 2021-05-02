@@ -13,13 +13,15 @@ import Model.BookReaderManagement;
 import Model.Reader;
 
 
+
 public class FileManipulation 
 
 {
+    
     private static FileWriter fileWriter;
     private static BufferedWriter bufferedWriter;
     private static PrintWriter printWriter;
-    private Scanner scanner;
+    private static Scanner scanner;
 
     public static void openFileToWrite(String filename)
     {
@@ -80,7 +82,7 @@ public class FileManipulation
             }
     }
 
-    public void openFileToRead(String fileName)
+    public static void openFileToRead(String fileName)
     {
         try 
         {
@@ -96,7 +98,7 @@ public class FileManipulation
             }
     }
 
-    public void closeFileAfterRead(String fileName)
+    public static void closeFileAfterRead(String fileName)
     {
         try 
         {
@@ -108,7 +110,7 @@ public class FileManipulation
             }
     }
 
-    public ArrayList<Reader> readReadersFromFile(String fileName)
+    public static ArrayList<Reader> readReadersFromFile(String fileName)
     {
         openFileToRead(fileName);
         
@@ -125,7 +127,7 @@ public class FileManipulation
         return readers;
     }
 
-    public Reader createReaderFromData(String data)
+    public static Reader createReaderFromData(String data)
     {
         String[] datas = data.split("\\|");
 
@@ -134,7 +136,7 @@ public class FileManipulation
         return reader;
     }
 
-    public ArrayList<Book> readBooksFromFile(String fileName)
+    public static ArrayList<Book> readBooksFromFile(String fileName)
     {
         openFileToRead(fileName);
 
@@ -155,7 +157,7 @@ public class FileManipulation
         return books;
     }
 
-    public Book createBookFromData(String data) 
+    public static Book createBookFromData(String data) 
     {
         String[] datas = data.split("\\|");
     
@@ -164,10 +166,12 @@ public class FileManipulation
         return book;
     }
 
-    public ArrayList<BookReaderManagement> readBRMsFromFile(String filename)
+    public static ArrayList<BookReaderManagement> readBRMsFromFile(String filename)
     {
-        var books = readBooksFromFile(BOOK.DATA);
-        var readers = readReadersFromFile(READER.DAT);
+       
+        var books = readBooksFromFile("BOOK.DAT");
+      
+        var readers = readReadersFromFile("READER.DAT");
         openFileToRead(filename);
 
         ArrayList<BookReaderManagement> brms = new ArrayList<>();
@@ -187,11 +191,13 @@ public class FileManipulation
         return brms;
     }
 
-    public BookReaderManagement createBRMsData(String data, ArrayList<Reader> readers, ArrayList<Book> books) 
+    public static BookReaderManagement createBRMsData(String data, ArrayList<Reader> readers, ArrayList<Book> books) 
     {
         String[] datas = data.split("\\|");
     
-        BookReaderManagement brm = new BookReaderManagement(getBook(books, Integer.parseInt(datas[1])), getReader(readers. Integer.parseInt(datas[0])), Integer.parseInt(datas[2]),datas[3], 0);
+        BookReaderManagement brm = new BookReaderManagement(getBook(books, Integer.parseInt(datas[1]))
+                                        , getReader(readers, Integer.parseInt(datas[0]))
+                                        , Integer.parseInt(datas[2]), datas[3], 0);
         
         return brm;
     }

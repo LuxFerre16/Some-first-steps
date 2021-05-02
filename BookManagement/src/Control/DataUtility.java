@@ -61,7 +61,7 @@ public class DataUtility
                         String[] name1 = bj.getReader().getFullName().split("\\s");
                         String[] name2 = bj.getReader().getFullName().split("\\s");
 
-                        if(name1[name1.length() -1].compareTo(name2[name2.length() -1]) < 0 );
+                        if(name1[name1.length -1].compareTo(name2[name2.length -1]) < 0 );
                         {
                             list.set(j, bbj);
                             list.set(j-1, bj);

@@ -219,7 +219,7 @@ public class View
                 }
                 case 6: 
                 {
-                    brms = FileManipulation.readBooksFromFile(booksFileName);
+                    brms = FileManipulation.readBRMsFromFile("BRM.DAT");
                     System.out.println("===================================================");
                     System.out.println("=========Sorting method: ==========");
                     brms = ultility.updateTotalBorrow(brms);
