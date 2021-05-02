@@ -22,7 +22,7 @@ public class View
         var controller = new FileManipulation();
         var books = new ArrayList<Book>();
         var readers = new ArrayList<Reader>();
-        var brms = new ArrayList<BookReaderManagement>();
+        ArrayList<BookReaderManagement> brms = new ArrayList<BookReaderManagement>();
         
         var isBookIDChecked = false;
         var isReaderIDChecked = false;
@@ -101,7 +101,7 @@ public class View
                 {
                     System.out.println("_____________Books information__________________");
                 
-                    books = controller.readBooksFromFile(booksFileName);
+                    books = FileManipulation.readBooksFromFile(booksFileName);
                     showBookInfo(books);
                     
                     break;
@@ -139,7 +139,7 @@ public class View
 
                 case 4:
                 {
-                    readers = controller.readReadersFromFile(readersFileName);
+                    readers = FileManipulation.readReadersFromFile(readersFileName);
                     showReaderInfo(readers);
                     break;
                 }
@@ -147,9 +147,9 @@ public class View
 
                 case 5:
                 {   
-                    readers = controller.readReadersFromFile(readersFileName);
-                    books = controller.readBooksFromFile(booksFileName);
-                    brms = controller.readBRMsFromFile(BRMFileName);
+                    readers = FileManipulation.readReadersFromFile(readersFileName);
+                    books = FileManipulation.readBooksFromFile(booksFileName);
+                    brms = FileManipulation.readBRMsFromFile(BRMFileName);
 
                     int readerID, booksID;
                     boolean reachLimit = false;
@@ -354,7 +354,7 @@ public class View
 
     private static void checkReaderID(FileManipulation controller, String fileName) 
     {
-        var readersList = controller.readReadersFromFile(fileName);
+        var readersList = FileManipulation.readReadersFromFile(fileName);
         
         if (readersList.size() == 0)
         {
