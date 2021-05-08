@@ -63,7 +63,7 @@ public class FileManipulation
     {
         openFileToWrite(fileName);
         
-        printWriter.println(brm.getReader().getReaderID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
+        printWriter.println(brm.getReader().getReaderID() + "|" + brm.getBook().getBookID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
         
         closeFileAfterWrite(fileName);
     }
@@ -151,7 +151,6 @@ public class FileManipulation
             
         }
         
-        
         closeFileAfterRead(fileName);
 
         return books;
@@ -209,7 +208,7 @@ public class FileManipulation
         openFileToWrite(fileName);
         for (var brm : list)
         {
-            printWriter.println(brm.getReader().getReaderID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
+            printWriter.println(brm.getReader().getReaderID() + "|" + brm.getBook().getBookID() + "|" + brm.getNumOfBorrow() + "|" + brm.getState());
         }
 
 
