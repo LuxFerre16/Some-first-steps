@@ -3,26 +3,29 @@ package View;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Control.DataUtility;
-import Control.FileManipulation;
+import Controller.BookController;
+import Controller.DataUtility;
+import Controller.ReaderController;
+import Controller.ReaderManagementController;
 import Model.Book;
-import Model.BookReaderManagement;
 import Model.Reader;
+import Model.ReaderManagement;
 
-public class View 
-{
-    public static void main(String[] args)
+public class Menu {
+
+    public static void menuCall()
     {
         int choice= 0;
         
         var booksFileName = "BOOK.DAT";
         var readersFileName = "READER.DAT";
-        var BRMFileName = "BRM.DAT";
+        var RMFileName = "RM.DAT";
         
-        var controller = new FileManipulation();
+        var bController = new BookController();
+        var rController = new ReaderController();
         var books = new ArrayList<Book>();
         var readers = new ArrayList<Reader>();
-        ArrayList<BookReaderManagement> brms = new ArrayList<BookReaderManagement>();
+        ArrayList<ReaderManagement> rms = new ArrayList<ReaderManagement>();
         
         var isBookIDChecked = false;
         var isReaderIDChecked = false;
@@ -46,7 +49,8 @@ public class View
 
             choice = scanner.nextInt();
             scanner.nextLine();
-            switch (choice)
+    
+        switch (choice)
             {
                 case 0: 
                     {
@@ -58,12 +62,13 @@ public class View
                 case 1: 
                 {
                 
-                    if (!isBookIDChecked)
+                    
+                   if (!isBookIDChecked)
                         {
-                        checkbookID(controller,booksFileName);
+                        checkbookID(bController,booksFileName);
                         isBookIDChecked = true;
                         }
-                
+                     
                 
                     String bookName, author, specializations;
                     int yearOfPublication, quantity,specV;
@@ -91,7 +96,7 @@ public class View
                     quantity = scanner.nextInt();
                 
                     Book book = new Book(0,bookName, author, specializations, yearOfPublication, quantity);
-                    controller.writeBookToFile(book, booksFileName);
+                    bController.writeBookToFile(book, booksFileName);
                 
                 
                     break;
@@ -101,7 +106,7 @@ public class View
                 {
                     System.out.println("_____________Books information__________________");
                 
-                    books = FileManipulation.readBooksFromFile(booksFileName);
+                    books = bController.readBooksFromFile(booksFileName);
                     showBookInfo(books);
                     
                     break;
@@ -111,7 +116,7 @@ public class View
                 {   
                     if (!isReaderIDChecked)
                     {
-                        checkReaderID(controller,readersFileName);
+                        checkReaderID(rController,readersFileName);
                         isReaderIDChecked = true;
                     }
                 
@@ -132,14 +137,14 @@ public class View
                     }while (!phoneNumber.matches("\\d{10}"));
 
                     Reader reader = new Reader(0, fullName, address, phoneNumber);
-                    controller.writeReaderToFile(reader, readersFileName);
+                    ReaderController.writeReaderToFile(reader, readersFileName);
 
                     break;
                 }
 
                 case 4:
                 {
-                    readers = FileManipulation.readReadersFromFile(readersFileName);
+                    readers = ReaderController.readReadersFromFile(readersFileName);
                     showReaderInfo(readers);
                     break;
                 }
@@ -147,9 +152,9 @@ public class View
 
                 case 5:
                 {   
-                    readers = FileManipulation.readReadersFromFile(readersFileName);
-                    books = FileManipulation.readBooksFromFile(booksFileName);
-                    brms = FileManipulation.readBRMsFromFile(BRMFileName);
+                    readers = ReaderController.readReadersFromFile(readersFileName);
+                    books = bController.readBooksFromFile(booksFileName);
+                    rms = ReaderManagementController.readRMsFromFile(RMFileName);
 
                     int readerID, booksID;
                     boolean reachLimit = false;
@@ -163,7 +168,7 @@ public class View
                         readerID = scanner.nextInt();
                         if (readerID == 0 ) break;
 
-                        reachLimit = checkBorrowed(brms, readerID);
+                        reachLimit = checkBorrowed(rms, readerID);
 
                         if (reachLimit) break;
                         else 
@@ -182,11 +187,11 @@ public class View
                         booksID = scanner.nextInt();
                     
                         if (booksID == 0) break;
-                        bookLimit = checkBookLimit(brms, readerID, booksID);
+                        bookLimit = checkBookLimit(rms, readerID, booksID);
                         if (bookLimit) System.out.println("Reached limit of this book title!"); else break; 
                     }while(true);
 
-                    int total = getTotal(brms, readerID, booksID);
+                    int total = getTotal(rms, readerID, booksID);
                     do
                     {
                     
@@ -209,20 +214,20 @@ public class View
                     Book currentBook = getBook(books, booksID);
                     Reader currentReader = getReader(readers, readerID);
 
-                    BookReaderManagement b = new BookReaderManagement(currentBook, currentReader, total, status,0);
+                    ReaderManagement b = new ReaderManagement(currentBook, currentReader, total, status,0);
 
-                    brms = utility.updateBRMInfo(brms, b);
-                    FileManipulation.updateBRMFile(brms, BRMFileName);
+                    rms = utility.updateRMInfo(rms, b);
+                    ReaderManagementController.updateRMFile(rms, RMFileName);
 
-                    showBRMInfo(brms);
+                    showRMInfo(rms);
                     break;
                 }
                 case 6: 
                 {
-                    brms = FileManipulation.readBRMsFromFile("BRM.DAT");
+                    rms = ReaderManagementController.readRMsFromFile("BRM.DAT");
                     System.out.println("===================================================");
                     System.out.println("=========Sorting method: ==========");
-                    brms = utility.updateTotalBorrow(brms);
+                    rms = utility.updateTotalBorrow(rms);
                     do 
                     {
                     
@@ -237,14 +242,14 @@ public class View
                             case 1: 
                                 {
                                 
-                                    brms = utility.sortByReaderName(brms);
-                                    showBRMInfo(brms);
+                                    rms = utility.sortByReaderName(rms);
+                                    showRMInfo(rms);
                                     break;
                                 }
                             case 2:
                                 {
-                                    brms = utility.sortByNumOfBorrow(brms);
-                                    showBRMInfo(brms);
+                                    rms = utility.sortByNumOfBorrow(rms);
+                                    showRMInfo(rms);
                                     break;
                                 }
                         }
@@ -252,35 +257,32 @@ public class View
                 }
                 case 7:
                 {
-                    brms = FileManipulation.readBRMsFromFile(BRMFileName);
+                    rms = ReaderManagementController.readRMsFromFile(RMFileName);
                     System.out.println("Input words in desire Name: ");
                     String key = scanner.nextLine();
 
-                    var result = utility.searchByReaderName(brms, key);
+                    var result = utility.searchByReaderName(rms, key);
                     if (result.size() == 0)
                     {
                     System.out.println("None Reader with similar name found!");
                     } else 
                     {
-                        showBRMInfo(result);;
+                        showRMInfo(result);;
                     }
                     break;
                 }
 
             }
 
-        }    
-    
-    
-        
-        while (choice != 0);
+        }while (choice != 0);
         scanner.close();
+
     }
 
    
-    private static void showBRMInfo(ArrayList<BookReaderManagement> brms) 
+    private static void showRMInfo(ArrayList<ReaderManagement> rms) 
     {
-        for (var b : brms)
+        for (var b : rms)
         {
             System.out.println(b);
         }
@@ -315,9 +317,9 @@ public class View
     }
 
 
-    private static int getTotal(ArrayList<BookReaderManagement> brms, int readerID, int booksID) 
+    private static int getTotal(ArrayList<ReaderManagement> rms, int readerID, int booksID) 
     {
-        for (var r: brms)
+        for (var r: rms)
         {
             if (r.getReader().getReaderID() == readerID 
                 && r.getBook().getBookID() == booksID) {return r.getNumOfBorrow();}
@@ -328,9 +330,9 @@ public class View
     }
 
 
-    private static boolean checkBookLimit(ArrayList<BookReaderManagement> brms, int readerID, int bookID) 
+    private static boolean checkBookLimit(ArrayList<ReaderManagement> rms, int readerID, int bookID) 
     {
-        for (var r: brms)
+        for (var r: rms)
         {
             if (r.getReader().getReaderID() == readerID 
                 && r.getBook().getBookID() == bookID && r.getNumOfBorrow() ==3 ) {return true;}
@@ -352,9 +354,9 @@ public class View
     }
 
 
-    private static void checkReaderID(FileManipulation controller, String fileName) 
+    private static void checkReaderID(ReaderController controller, String fileName) 
     {
-        var readersList = FileManipulation.readReadersFromFile(fileName);
+        var readersList = ReaderController.readReadersFromFile(fileName);
         
         if (readersList.size() == 0)
         {
@@ -364,10 +366,13 @@ public class View
     }
 
 
-    private static void checkbookID(FileManipulation controller, String fileName) 
+    private static void checkbookID(BookController controller, String fileName) 
     {
-        var booksList = FileManipulation.readBooksFromFile(fileName);
+        
+        System.out.println("Ham 1 buoc 1");
+        var booksList = controller.readBooksFromFile(fileName);
 
+        System.out.println("Ham 1");
         if (booksList.size() == 0)
         {
             //do nothing            
@@ -382,10 +387,10 @@ public class View
             System.out.println(b);
     }
 
-    private static boolean checkBorrowed(ArrayList<BookReaderManagement> brms, int readerID)
+    private static boolean checkBorrowed(ArrayList<ReaderManagement> rms, int readerID)
     {
         int count = 0;
-        for (var r: brms)
+        for (var r: rms)
         {
             if (r.getReader().getReaderID() == readerID)
             {
@@ -397,8 +402,6 @@ public class View
         return true;
 
     }
-
 }
-    
     
 

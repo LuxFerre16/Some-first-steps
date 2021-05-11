@@ -1,16 +1,14 @@
 package Model;
 
-public class BookReaderManagement 
-{
-
+public class ReaderManagement {
     private Book book;
     private Reader reader;
     private int numOfBorrow;
     private String state;
     private int totalBorrow;
-   
+
     //Constructor
-    public BookReaderManagement(Book book, Reader reader, int numOfBorrow, String state, int totalBorrow) 
+    public ReaderManagement(Book book, Reader reader, int numOfBorrow, String state, int totalBorrow) 
     {
         this.book = book;
         this.reader = reader;
@@ -63,11 +61,11 @@ public class BookReaderManagement
     public int getFullName() {
         return 0;
     }
-
+    
     @Override
     public String toString() {
-        return "ReaderManagement [ReaderID: " + reader.getReaderID() + ", Reader's name: " + reader.getFullName() + ", BookID: " + book.getBookID() + ", Book title: " + book.getBookName() + ", Num Of borrow= " + numOfBorrow + ", Status: "
-                + state + ", total borrow=" + totalBorrow + "]";
+        return "ReaderManagement [ReaderID: " + reader.getReaderID() + ", Reader's name: " + reader.getFullName()
+            + ", BookID: " + book.getBookID() + ", Book title: " + book.getBookName() + ", Num Of borrow= " + numOfBorrow + ", Status: "
+            + state + ", total borrow=" + totalBorrow + "]";
     }
-
 }

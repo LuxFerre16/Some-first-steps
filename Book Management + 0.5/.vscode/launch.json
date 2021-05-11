@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        
+    {
+        "type": "java",
+        "name": "Launch Main",
+        "request": "launch",
+        "mainClass": "View.Main",
+        "projectName": "Book Management + 0.5_3517fc75"
+    }
+    ]
+
+}
