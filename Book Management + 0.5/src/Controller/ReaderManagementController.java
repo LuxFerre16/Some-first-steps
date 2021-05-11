@@ -18,7 +18,7 @@ public class ReaderManagementController {
     static BufferedWriter bufferedWriter;
     static PrintWriter printWriter;
     
-    static Scanner scanner = new Scanner(System.in);
+     private static Scanner scanner;
     
     
     private static void openFileToWrite(String filename)
@@ -98,17 +98,15 @@ public class ReaderManagementController {
         openFileToRead(filename);
 
         ArrayList<ReaderManagement> rms = new ArrayList<>();
-
+       
         while (scanner.hasNextLine())
-        {
+        {   
             String data = scanner.nextLine();
             ReaderManagement rm = createRMsData(data, readers, books);
             rms.add(rm);    
         }
         
         closeFileAfterRead(filename);
-        System.out.println("RMs size: " + rms.size());
-        
         return rms;
     }
 

@@ -186,7 +186,7 @@ public class Menu {
                         System.out.println("Input bookID, 0 to skip.");
                         booksID = scanner.nextInt();
                     
-                        if (booksID == 0) break;
+                        if (booksID == 0) {break;}
                         bookLimit = checkBookLimit(rms, readerID, booksID);
                         if (bookLimit) System.out.println("Reached limit of this book title!"); else break; 
                     }while(true);
@@ -224,7 +224,7 @@ public class Menu {
                 }
                 case 6: 
                 {
-                    rms = ReaderManagementController.readRMsFromFile("BRM.DAT");
+                    rms = ReaderManagementController.readRMsFromFile("RM.DAT");
                     
                     System.out.println("===================================================");
                     System.out.println("=========Sorting method: ==========");
@@ -244,14 +244,12 @@ public class Menu {
                         {
                             case 1: 
                                 {
-                                    System.out.println("Case 1 ok");
                                     rms = utility.sortByReaderName(rms);
                                     showRMInfo(rms);
                                     break;
                                 }
                             case 2:
                                 {
-                                    System.out.println("Case 2 ok");
                                     rms = utility.sortByNumOfBorrow(rms);
                                     showRMInfo(rms);
                                     break;
@@ -287,7 +285,6 @@ public class Menu {
    
     private static void showRMInfo(ArrayList<ReaderManagement> rms) 
     {
-        System.out.println("Show chay");
         for (var b : rms)
         {
             System.out.println(b);
