@@ -1,6 +1,10 @@
 package Controller;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,15 +14,78 @@ import Model.ReaderManagement;
 
 public class ReaderManagementController {
 
-    private static Scanner scanner;
+    static FileWriter fileWriter;
+    static BufferedWriter bufferedWriter;
+    static PrintWriter printWriter;
+    
+    static Scanner scanner = new Scanner(System.in);
+    
+    
+    private static void openFileToWrite(String filename)
+    {
+        try 
+        {
+            fileWriter = new FileWriter(filename, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            printWriter = new PrintWriter(bufferedWriter);
+
+        } catch (Exception e) 
+            {
+            e.printStackTrace();
+            }
+        
+
+    }
+    
+    private static void closeFileAfterWrite(String fileName)
+    {
+        try 
+        {
+            printWriter.close();
+            bufferedWriter.close();
+            fileWriter.close();    
+        } catch (Exception e) 
+            {
+            e.printStackTrace();
+            }
+    }
+    
+    private static void openFileToRead(String fileName)
+    {
+        try 
+        {
+            File file = new File(fileName);
+            if (!file.exists())
+            {
+                file.createNewFile();
+            }
+            scanner = new Scanner(Paths.get(fileName),"UTF-8");
+        } catch (Exception e) 
+            {
+            e.printStackTrace();
+            }
+    }
+
+    private static void closeFileAfterRead(String fileName)
+    {
+        try 
+        {
+            scanner.close();
+        } 
+        catch (Exception e) 
+            {
+            e.printStackTrace();
+            }
+    }
+
 
     public void writeReaderManagementToFile(ReaderManagement RM, String fileName)
     {
-        FileOperation.openFileToWrite(fileName);
+        openFileToWrite(fileName);
         
-        FileOperation.printWriter.println(RM.getReader().getReaderID() + "|" + RM.getBook().getBookID() + "|" + RM.getNumOfBorrow() + "|" + RM.getState());
+        printWriter.println(RM.getReader().getReaderID() + "|" + RM.getBook().getBookID() + "|" + RM.getNumOfBorrow() + "|" + RM.getState());
         
-        FileOperation.closeFileAfterWrite(fileName);
+        closeFileAfterWrite(fileName);
     }
 
     public static ArrayList<ReaderManagement> readRMsFromFile(String filename)
@@ -27,7 +94,8 @@ public class ReaderManagementController {
         var books = BookController.readBooksFromFile("BOOK.DAT");
       
         var readers = ReaderController.readReadersFromFile("READER.DAT");
-        FileOperation.openFileToRead(filename);
+        
+        openFileToRead(filename);
 
         ArrayList<ReaderManagement> rms = new ArrayList<>();
 
@@ -38,19 +106,22 @@ public class ReaderManagementController {
             rms.add(rm);    
         }
         
-        FileOperation.closeFileAfterRead(filename);
-
+        closeFileAfterRead(filename);
+        System.out.println("RMs size: " + rms.size());
+        
         return rms;
     }
 
     public static ReaderManagement createRMsData(String data, ArrayList<Reader> readers, ArrayList<Book> books) 
     {
+        
         String[] Tokens = data.split("\\|");
-    
+        
         ReaderManagement rm = new ReaderManagement(getBook(books, Integer.parseInt(Tokens[1]))
                                         , getReader(readers, Integer.parseInt(Tokens[0]))
                                         , Integer.parseInt(Tokens[2]), Tokens[3], 0);
         
+        System.out.println(rm);
         return rm;
     }
     
@@ -85,14 +156,14 @@ public class ReaderManagementController {
         File current = new File(fileName);
         if (current.exists()) current.delete();
 
-        FileOperation.openFileToWrite(fileName);
+        openFileToWrite(fileName);
         for (var rm : list)
         {
-            FileOperation.printWriter.println(rm.getReader().getReaderID() + "|" + rm.getBook().getBookID() + "|" + rm.getNumOfBorrow() + "|" + rm.getState());
+            printWriter.println(rm.getReader().getReaderID() + "|" + rm.getBook().getBookID() + "|" + rm.getNumOfBorrow() + "|" + rm.getState());
         }
 
 
-        FileOperation.closeFileAfterWrite(fileName);
+        closeFileAfterWrite(fileName);
     }
 
 }

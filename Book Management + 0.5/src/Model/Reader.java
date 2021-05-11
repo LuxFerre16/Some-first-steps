@@ -65,5 +65,11 @@ public class Reader {
         id = i;
     }
 
+    @Override
+    public String toString() {
+        return "Reader [ ReaderID: " + readerID + ", Full name:" + fullName + ", Address: " + address +  ", Phone number:" + phoneNumber + "]";
+    }
+
+    
 
 }

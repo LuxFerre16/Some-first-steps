@@ -9,10 +9,11 @@ public class DataUtility {
 
     public ArrayList<ReaderManagement> updateRMInfo(ArrayList<ReaderManagement> list , ReaderManagement rm){
     boolean isUpdated = false;
-
+        
     for (int i = 0; i < list.size(); i++)
     {
         ReaderManagement b = list.get(i);
+        
         if ( b.getBook().getBookID() == rm.getBook().getBookID()
         && b.getReader().getReaderID() == rm.getReader().getReaderID() )
         {
@@ -20,10 +21,10 @@ public class DataUtility {
         }
     }
     
-    if(!isUpdated)
-    {
-        list.add(rm);
-    }
+        if(!isUpdated)
+        {
+            list.add(rm);
+        }
     return list;    
     }
 
@@ -45,6 +46,7 @@ public class DataUtility {
 
     public ArrayList<ReaderManagement> sortByReaderName(ArrayList<ReaderManagement> list){
         
+        
         for(int i = 0; i< list.size(); i++)
             {
                     
@@ -65,6 +67,7 @@ public class DataUtility {
                     }
             
             }
+        
         return list;
     }
     

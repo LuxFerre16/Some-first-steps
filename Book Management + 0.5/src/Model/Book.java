@@ -90,5 +90,12 @@ public class Book {
     id = i;
     }
 
+    @Override
+    public String toString() {
+        return "Book [ BookID: " + bookID + ", Book title: " + bookName + "Author: " + author + ", Public Year:" + publicYear
+                + ", Quantity: " + quantity + ", Specializations:" + specializations + "]";
+    }
+
+    
     
 }

@@ -43,7 +43,7 @@ public class Menu {
         System.out.println("4. Print list of Readers");
         System.out.println("5. Establish book management information");
         System.out.println("6. Sort");
-        System.out.println("7. Find reader in BRM list.");
+        System.out.println("7. Find reader in RM list.");
         System.out.println("0. Exit");
         System.out.println("Your choice: ? ? ?");
 
@@ -106,7 +106,7 @@ public class Menu {
                 {
                     System.out.println("_____________Books information__________________");
                 
-                    books = bController.readBooksFromFile(booksFileName);
+                    books = BookController.readBooksFromFile(booksFileName);
                     showBookInfo(books);
                     
                     break;
@@ -153,7 +153,7 @@ public class Menu {
                 case 5:
                 {   
                     readers = ReaderController.readReadersFromFile(readersFileName);
-                    books = bController.readBooksFromFile(booksFileName);
+                    books = BookController.readBooksFromFile(booksFileName);
                     rms = ReaderManagementController.readRMsFromFile(RMFileName);
 
                     int readerID, booksID;
@@ -218,13 +218,14 @@ public class Menu {
 
                     rms = utility.updateRMInfo(rms, b);
                     ReaderManagementController.updateRMFile(rms, RMFileName);
-
                     showRMInfo(rms);
+                    
                     break;
                 }
                 case 6: 
                 {
                     rms = ReaderManagementController.readRMsFromFile("BRM.DAT");
+                    
                     System.out.println("===================================================");
                     System.out.println("=========Sorting method: ==========");
                     rms = utility.updateTotalBorrow(rms);
@@ -236,24 +237,28 @@ public class Menu {
                     System.out.println("0 to return to main menu");
                     int z;
                     z = scanner.nextInt();
+                    scanner.nextLine();
+                    
                     if (z==0) {break;}
                     switch(z)
                         {
                             case 1: 
                                 {
-                                
+                                    System.out.println("Case 1 ok");
                                     rms = utility.sortByReaderName(rms);
                                     showRMInfo(rms);
                                     break;
                                 }
                             case 2:
                                 {
+                                    System.out.println("Case 2 ok");
                                     rms = utility.sortByNumOfBorrow(rms);
                                     showRMInfo(rms);
                                     break;
                                 }
                         }
                     } while (true);
+                    break;
                 }
                 case 7:
                 {
@@ -282,6 +287,7 @@ public class Menu {
    
     private static void showRMInfo(ArrayList<ReaderManagement> rms) 
     {
+        System.out.println("Show chay");
         for (var b : rms)
         {
             System.out.println(b);
@@ -369,10 +375,9 @@ public class Menu {
     private static void checkbookID(BookController controller, String fileName) 
     {
         
-        System.out.println("Ham 1 buoc 1");
+        
         var booksList = controller.readBooksFromFile(fileName);
 
-        System.out.println("Ham 1");
         if (booksList.size() == 0)
         {
             //do nothing            
